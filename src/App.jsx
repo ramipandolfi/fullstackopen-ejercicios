@@ -3,7 +3,6 @@ const Header = (props) => {
 };
 
 const Part = (props) => {
-  // Accedemos a las propiedades del objeto 'part' usando el punto
   return (
     <p>
       {props.part.name} {props.part.exercises}
@@ -14,46 +13,41 @@ const Part = (props) => {
 const Content = (props) => {
   return (
     <div>
-      <Part part={props.parts[0]} />
-      <Part part={props.parts[1]} />
-      <Part part={props.parts[2]} />
+      <Part part={props.p1} />
+      <Part part={props.p2} />
+      <Part part={props.p3} />
     </div>
   );
 };
 
 const Total = (props) => {
-  return (
-    <p>
-      Number of exercises{" "}
-      {props.parts[0].exercises +
-        props.parts[1].exercises +
-        props.parts[2].exercises}
-    </p>
-  );
+  return <p>Number of exercises {props.ex1 + props.ex2 + props.ex3}</p>;
 };
 
 const App = () => {
   const course = "Half Stack application development";
-  const parts = [
-    {
-      name: "Fundamentals of React",
-      exercises: 10,
-    },
-    {
-      name: "Using props to pass data",
-      exercises: 7,
-    },
-    {
-      name: "State of a component",
-      exercises: 14,
-    },
-  ];
+  const part1 = {
+    name: "Fundamentals of React",
+    exercises: 10,
+  };
+  const part2 = {
+    name: "Using props to pass data",
+    exercises: 7,
+  };
+  const part3 = {
+    name: "State of a component",
+    exercises: 14,
+  };
 
   return (
     <div>
       <Header course={course} />
-      <Content parts={parts} />
-      <Total parts={parts} />
+      <Content p1={part1} p2={part2} p3={part3} />
+      <Total
+        ex1={part1.exercises}
+        ex2={part2.exercises}
+        ex3={part3.exercises}
+      />
     </div>
   );
 };
