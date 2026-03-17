@@ -1,51 +1,61 @@
-// 1. Definimos los componentes (Las herramientas)
 const Header = (props) => {
   return <h1>{props.course}</h1>;
 };
 
 const Part = (props) => {
-  return <p>{props.part}</p>;
-};
-
-const Total = (props) => {
-  return <p>Number of exercises {props.exercises}</p>;
+  // Accedemos a las propiedades del objeto 'part' usando el punto
+  return (
+    <p>
+      {props.part.name} {props.part.exercises}
+    </p>
+  );
 };
 
 const Content = (props) => {
   return (
     <div>
-      <Part part={props.p1 + " " + props.e1} />
-      <Part part={props.p2} exercises={props.e2} />
-      <Part part={props.p3 + " " + props.e3} />
+      <Part part={props.parts[0]} />
+      <Part part={props.parts[1]} />
+      <Part part={props.parts[2]} />
     </div>
   );
 };
 
-// 2. Definimos el componente principal (El Jefe que usa las herramientas)
+const Total = (props) => {
+  return (
+    <p>
+      Number of exercises{" "}
+      {props.parts[0].exercises +
+        props.parts[1].exercises +
+        props.parts[2].exercises}
+    </p>
+  );
+};
+
 const App = () => {
   const course = "Half Stack application development";
-  const part1 = "Fundamentals of React";
-  const exercises1 = 10;
-  const part2 = "Using props to pass data";
-  const exercises2 = 7;
-  const part3 = "State of a component";
-  const exercises3 = 14;
+  const parts = [
+    {
+      name: "Fundamentals of React",
+      exercises: 10,
+    },
+    {
+      name: "Using props to pass data",
+      exercises: 7,
+    },
+    {
+      name: "State of a component",
+      exercises: 14,
+    },
+  ];
 
   return (
     <div>
       <Header course={course} />
-      <Content
-        p1={part1}
-        e1={exercises1}
-        p2={part2}
-        e2={exercises2}
-        p3={part3}
-        e3={exercises3}
-      />
-      <Total exercises={exercises1 + exercises2 + exercises3} />
+      <Content parts={parts} />
+      <Total parts={parts} />
     </div>
   );
 };
 
-// 3. Exportamos (Avisamos que App es lo más importante)
 export default App;
