@@ -1,42 +1,47 @@
 import { useState } from "react";
+
+const Statistics = ({ good, neutral, bad, total, average, positive }) => {
+  return (
+    <div>
+      <p>good {good}</p>
+      <p>neutral {neutral}</p>
+      <p>bad {bad}</p>
+      <p>all {total}</p>
+      <p>average {average}</p>
+      <p>positive {positive} %</p>
+    </div>
+  );
+};
+
 const App = () => {
   const [good, counterGood] = useState(0);
   const [neutral, counterNeutral] = useState(0);
   const [bad, counterBad] = useState(0);
 
-  const handleClickGood = () => {
-    counterGood(good + 1);
-  };
-  const handleClickNeutral = () => {
-    counterNeutral(neutral + 1);
-  };
-  const handleClickBad = () => {
-    counterBad(bad + 1);
-  };
   const total = good + neutral + bad;
+
+  const average = total === 0 ? 0 : (good - bad) / total;
+  const positive = total === 0 ? 0 : (good / total) * 100;
 
   return (
     <div>
-      <h1> give feedback</h1>
-      <button onClick={handleClickGood} style={{ padding: "10px 20px" }}>
-        good
-      </button>
-      <button onClick={handleClickNeutral} style={{ padding: "10px 20px" }}>
-        neutral
-      </button>
-      <button onClick={handleClickBad} style={{ padding: "10px 20px" }}>
-        bad
-      </button>
-      <h1>statics</h1>
-      <p>Clicks good {good} </p>
-      <p>Clicks neutral {neutral} </p>
-      <p>Clicks bad {bad} </p>
-      all opinions: {total}
-      <br></br>
-      average : {(good + bad * -1) / total}
-      <br></br>
-      positive : {(good / total) * 100}
+      <h1>give feedback</h1>
+      <button onClick={() => counterGood(good + 1)}>good</button>
+      <button onClick={() => counterNeutral(neutral + 1)}>neutral</button>
+      <button onClick={() => counterBad(bad + 1)}>bad</button>
+
+      <h1>statistics</h1>
+
+      <Statistics
+        good={good}
+        neutral={neutral}
+        bad={bad}
+        total={total}
+        average={average}
+        positive={positive}
+      />
     </div>
   );
 };
+
 export default App;
