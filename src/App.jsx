@@ -1,63 +1,42 @@
-const Header = (props) => {
-  return <h1>{props.course}</h1>;
-};
-
-const Part = (props) => {
-  return (
-    <p>
-      {props.part.name} {props.part.exercises}
-    </p>
-  );
-};
-
-const Content = (props) => {
-  return (
-    <div>
-      <Part part={props.parts[0]} />
-      <Part part={props.parts[1]} />
-      <Part part={props.parts[2]} />
-    </div>
-  );
-};
-
-const Total = (props) => {
-  return (
-    <p>
-      Number of exercises{" "}
-      {props.parts[0].exercises +
-        props.parts[1].exercises +
-        props.parts[2].exercises}
-    </p>
-  );
-};
-
+import { useState } from "react";
 const App = () => {
-  const course = {
-    name: "Half Stack application development",
-    parts: [
-      {
-        name: "Fundamentals of React",
-        exercises: 10,
-      },
-      {
-        name: "Using props to pass data",
-        exercises: 7,
-      },
-      {
-        name: "State of a component",
-        exercises: 14,
-      },
-    ],
+  const [good, counterGood] = useState(0);
+  const [neutral, counterNeutral] = useState(0);
+  const [bad, counterBad] = useState(0);
+
+  const handleClickGood = () => {
+    counterGood(good + 1);
   };
+  const handleClickNeutral = () => {
+    counterNeutral(neutral + 1);
+  };
+  const handleClickBad = () => {
+    counterBad(bad + 1);
+  };
+  const total = good + neutral + bad;
 
   return (
     <div>
-      {/* Ahora accedemos a los datos a través del objeto 'course' */}
-      <Header course={course.name} />
-      <Content parts={course.parts} />
-      <Total parts={course.parts} />
+      <h1> give feedback</h1>
+      <button onClick={handleClickGood} style={{ padding: "10px 20px" }}>
+        good
+      </button>
+      <button onClick={handleClickNeutral} style={{ padding: "10px 20px" }}>
+        neutral
+      </button>
+      <button onClick={handleClickBad} style={{ padding: "10px 20px" }}>
+        bad
+      </button>
+      <h1>statics</h1>
+      <p>Clicks good {good} </p>
+      <p>Clicks neutral {neutral} </p>
+      <p>Clicks bad {bad} </p>
+      all opinions: {total}
+      <br></br>
+      average : {(good + bad * -1) / total}
+      <br></br>
+      positive : {(good / total) * 100}
     </div>
   );
 };
-
 export default App;
