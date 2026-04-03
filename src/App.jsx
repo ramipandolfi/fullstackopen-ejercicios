@@ -1,82 +1,42 @@
-const Header = ({ name }) => {
-  return <h1>{name}</h1>;
-};
+import { useState } from "react";
 
-const Part = ({ namepart, exercisess }) => {
-  return (
-    <li>
-      {namepart} {exercisess}
-    </li>
-  );
-};
-
-const Content = ({ parts }) => {
-  return (
-    <ul>
-      {parts.map((p) => (
-        <Part key={p.id} namepart={p.name} exercisess={p.exercises} />
-      ))}
-    </ul>
-  );
-};
-
-const Total = ({ parts }) => {
-  const total = parts.reduce((s, p) => s + p.exercises, 0);
-  return (
-    <p>
-      <b>total of {total} exercises</b>
-    </p>
-  );
-};
-
-const Course = ({ course }) => {
-  return (
-    <div>
-      <Header name={course.name} />
-      <Content parts={course.parts} />
-      <Total parts={course.parts} />
-    </div>
-  );
-};
 const App = () => {
-  const courses = [
-    {
-      name: "Half Stack application development",
-      id: 1,
-      parts: [
-        {
-          name: "Fundamentals of React",
-          exercises: 10,
-          id: 1,
-        },
-        {
-          name: "Using props to pass data",
-          exercises: 7,
-          id: 2,
-        },
-        {
-          name: "State of a component",
-          exercises: 14,
-          id: 3,
-        },
-      ],
-    },
-    {
-      name: "Node.js",
-      id: 2,
-      parts: [
-        { name: "Routing", exercises: 3, id: 1 },
-        { name: "Middlewares", exercises: 7, id: 2 },
-      ],
-    },
-  ];
+  const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
+
+  const [newName, setNewName] = useState("");
+
+  const manejarCambioNombre = (e) => {
+    setNewName(e.target.value);
+  };
+
+  const agregarPersona = (event) => {
+    event.preventDefault();
+
+    const nuevaPersona = { name: newName };
+
+    setPersons(persons.concat(nuevaPersona));
+
+    setNewName("");
+  };
 
   return (
     <div>
-      <h1> web development curriculum</h1>
-      {courses.map((c) => (
-        <Course key={c.id} course={c} />
-      ))}
+      <h1>Phonebook</h1>
+      <form onSubmit={agregarPersona}>
+        <div>
+          name: <input value={newName} onChange={manejarCambioNombre} />
+        </div>
+        <div>
+          <button type="submit">add</button>
+        </div>
+      </form>
+
+      <h2>Numbers</h2>
+      <ul>
+        {persons.map((persona) => (
+          <li key={persona.name}>{persona.name}</li>
+        ))}
+      </ul>
     </div>
   );
 };
