@@ -1,17 +1,18 @@
 import { useState } from "react";
 
 const App = () => {
-  const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
+  const [persons, setPersons] = useState([
+    { name: "Arto Hellas", number: "040-123456" },
+  ]);
   const [newName, setNewName] = useState("");
+  const [newNumber, setNumber] = useState("");
 
-  const manejarCambioNombre = (e) => {
-    setNewName(e.target.value);
-  };
+  const manejarCambioNombre = (e) => setNewName(e.target.value);
+  const manejarCambioNumber = (e) => setNumber(e.target.value);
 
   const agregarPersona = (event) => {
     event.preventDefault();
 
-    // --- VALIDACIÓN (Ejercicio 2.7) ---
     const nombreExiste = persons.some((persona) => persona.name === newName);
 
     if (nombreExiste) {
@@ -19,9 +20,14 @@ const App = () => {
       return;
     }
 
-    const nuevaPersona = { name: newName };
+    const nuevaPersona = {
+      name: newName,
+      number: newNumber,
+    };
+
     setPersons(persons.concat(nuevaPersona));
     setNewName("");
+    setNumber("");
   };
 
   return (
@@ -32,6 +38,9 @@ const App = () => {
           name: <input value={newName} onChange={manejarCambioNombre} />
         </div>
         <div>
+          number: <input value={newNumber} onChange={manejarCambioNumber} />
+        </div>
+        <div>
           <button type="submit">add</button>
         </div>
       </form>
@@ -39,7 +48,9 @@ const App = () => {
       <h2>Numbers</h2>
       <ul>
         {persons.map((persona) => (
-          <li key={persona.name}>{persona.name}</li>
+          <li key={persona.name}>
+            {persona.name} {persona.number}
+          </li>
         ))}
       </ul>
     </div>
