@@ -2,7 +2,6 @@ import { useState } from "react";
 
 const App = () => {
   const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
-
   const [newName, setNewName] = useState("");
 
   const manejarCambioNombre = (e) => {
@@ -12,10 +11,16 @@ const App = () => {
   const agregarPersona = (event) => {
     event.preventDefault();
 
+    // --- VALIDACIÓN (Ejercicio 2.7) ---
+    const nombreExiste = persons.some((persona) => persona.name === newName);
+
+    if (nombreExiste) {
+      alert(`${newName} is already added to phonebook`);
+      return;
+    }
+
     const nuevaPersona = { name: newName };
-
     setPersons(persons.concat(nuevaPersona));
-
     setNewName("");
   };
 
