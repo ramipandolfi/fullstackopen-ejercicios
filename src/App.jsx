@@ -1,27 +1,62 @@
 import { useState } from "react";
 
+const Filter = ({ value, onChange }) => (
+  <div>
+    filter shown with: <input value={value} onChange={onChange} />
+  </div>
+);
+
+const PersonForm = ({
+  onSubmit,
+  nameValue,
+  nameOnChange,
+  numberValue,
+  numberOnChange,
+}) => (
+  <form onSubmit={onSubmit}>
+    <div>
+      name: <input value={nameValue} onChange={nameOnChange} />
+    </div>
+    <div>
+      number: <input value={numberValue} onChange={numberOnChange} />
+    </div>
+    <div>
+      <button type="submit">add</button>
+    </div>
+  </form>
+);
+
+const Persons = ({ personsAMostrar }) => (
+  <ul>
+    {personsAMostrar.map((persona) => (
+      <li key={persona.name}>
+        {persona.name} {persona.number}
+      </li>
+    ))}
+  </ul>
+);
+
 const App = () => {
   const [persons, setPersons] = useState([
     { name: "Arto Hellas", number: "040-123456" },
     { name: "Ada Lovelace", number: "39-44-5323523" },
+    { name: "Dan Abramov", number: "12-43-234345" },
+    { name: "Mary Poppendieck", number: "39-23-6423122" },
   ]);
+
   const [newName, setNewName] = useState("");
   const [newNumber, setNumber] = useState("");
-  const [filer, setFilter] = useState("");
+  const [filter, setFilter] = useState("");
 
   const manejarCambioNombre = (e) => setNewName(e.target.value);
   const manejarCambioNumber = (e) => setNumber(e.target.value);
   const manejarCambioFilter = (e) => setFilter(e.target.value);
 
-  const personasAMostrar = persons.filter((persona) =>
-    persona.name.toLowerCase().includes(filer.toLowerCase()),
-  );
-
   const agregarPersona = (event) => {
     event.preventDefault();
 
     const nombreExiste = persons.some(
-      (persona) => persona.name.toLowerCase() === newName.toLowerCase(),
+      (p) => p.name.toLowerCase() === newName.toLowerCase(),
     );
 
     if (nombreExiste) {
@@ -35,36 +70,29 @@ const App = () => {
     setNumber("");
   };
 
+  const personasAMostrar = persons.filter((p) =>
+    p.name.toLowerCase().includes(filter.toLowerCase()),
+  );
+
   return (
     <div>
       <h1>Phonebook</h1>
 
-      <div>
-        filter shown with:{" "}
-        <input value={filer} onChange={manejarCambioFilter} />
-      </div>
+      <Filter value={filter} onChange={manejarCambioFilter} />
 
       <h2>Add a new</h2>
-      <form onSubmit={agregarPersona}>
-        <div>
-          name: <input value={newName} onChange={manejarCambioNombre} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={manejarCambioNumber} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+
+      <PersonForm
+        onSubmit={agregarPersona}
+        nameValue={newName}
+        nameOnChange={manejarCambioNombre}
+        numberValue={newNumber}
+        numberOnChange={manejarCambioNumber}
+      />
 
       <h2>Numbers</h2>
-      <ul>
-        {personasAMostrar.map((persona) => (
-          <li key={persona.name}>
-            {persona.name} {persona.number}
-          </li>
-        ))}
-      </ul>
+
+      <Persons personsAMostrar={personasAMostrar} />
     </div>
   );
 };
